@@ -1,53 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
 
-import { Student, fetchStudents, deleteStudent } from '../actions'
-import { StoreState } from '../reducers'
+import Modal from './App/Modal'
+import StudentsList from './App/StudentsList'
 
-interface AppProps {
-  students: Student[]
-  fetchStudents: Function
-  deleteStudent: typeof deleteStudent
-}
-
-const App: React.FC<AppProps> = ({
-  students,
-  fetchStudents,
-  deleteStudent,
-}) => {
-  const [fetching, setFetching] = useState<boolean>(false)
-
-  useEffect(() => {
-    setFetching(false)
-  }, [students])
-
-  const onButtonClick = (): void => {
-    setFetching(true)
-    fetchStudents()
-  }
-
-  const onTodoClick = (id: number): void => {
-    deleteStudent(id)
-  }
-
-  const renderList = (): JSX.Element[] =>
-    students.map((todo: Student) => (
-      <div key={todo.id} onClick={() => onTodoClick(todo.id)}>
-        {todo.title}
-      </div>
-    ))
+const App: React.FC = () => {
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [modalChildren, setModalChildren] = useState<JSX.Element | null>(null)
 
   return (
     <div>
-      <button onClick={onButtonClick}>Fetch</button>
-      {fetching && 'Loading...'}
-      {renderList()}
+      <StudentsList
+        setShowModal={setShowModal}
+        setModalChildren={setModalChildren}
+      />
+      {showModal && <Modal>{modalChildren}</Modal>}
     </div>
   )
 }
 
-const mapStateToProps = (state: StoreState) => {
-  return { students: state.students }
-}
-
-export default connect(mapStateToProps, { fetchStudents, deleteStudent })(App)
+export default App
