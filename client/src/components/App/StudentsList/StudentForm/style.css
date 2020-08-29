@@ -1,0 +1,31 @@
+.student-form__container {
+  display: grid;
+  grid-gap: 1rem;
+}
+
+.student-form__input-field {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 1rem;
+}
+
+.student-form__input-field input {
+  width: 100%;
+}
+
+.student-form__input-error {
+  color: red;
+  font-size: 0.75rem;
+}
+
+.student-form__input-error--hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.student-form__footer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+}

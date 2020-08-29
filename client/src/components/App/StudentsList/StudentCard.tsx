@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Student } from '../../../actions'
+import './StudentCard/style.css'
 
 interface Props {
   student: Student
@@ -14,12 +15,14 @@ const StudentCard: React.FC<Props> = ({
   handleDelete,
 }): JSX.Element => {
   return (
-    <div key={student.id}>
+    <div key={student.id} className="student-card">
       <span>{student.name}</span>
       <span>{student.birthdate.toLocaleDateString()}</span>
       <span>{student.grade}</span>
-      <button onClick={() => handleUpdate(student)}>Edit</button>
-      <button onClick={() => handleDelete(student.id!)}>Delete</button>
+      <div className="student-card__actions">
+        <button onClick={() => handleUpdate(student)}>Edit</button>
+        <button onClick={() => handleDelete(student.id!)}>Delete</button>
+      </div>
     </div>
   )
 }

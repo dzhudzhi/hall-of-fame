@@ -1,0 +1,12 @@
+.student-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) 160px;
+  padding: 0.5rem;
+  border: 1px solid #e2e2e2;
+}
+
+.student-card__actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+}

@@ -12,6 +12,7 @@ import { StoreState } from '../../reducers'
 import StudentCard from './StudentsList/StudentCard'
 import StudentForm from './StudentsList/StudentForm'
 import Confirm from './StudentsList/Confirm'
+import './StudentsList/style.css'
 
 interface Props {
   students: Student[]
@@ -87,10 +88,22 @@ const StudentsList: React.FC<Props> = ({
     ))
 
   return (
-    <div>
-      <button onClick={handleAdd}>Add</button>
-      {fetching && 'Loading...'}
-      {renderList()}
+    <div className="students-list">
+      <div className="students-list__container">
+        <div>
+          <button className="students-list__add-button" onClick={handleAdd}>
+            Add
+          </button>
+        </div>
+        <header className="students-list__header">
+          <strong>Name</strong>
+          <strong>Birthdate</strong>
+          <strong>Grade</strong>
+          <strong>Actions</strong>
+        </header>
+        {fetching && 'Loading...'}
+        {renderList()}
+      </div>
     </div>
   )
 }
