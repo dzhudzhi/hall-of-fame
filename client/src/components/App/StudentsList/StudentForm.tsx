@@ -12,7 +12,7 @@ interface Props {
 }
 
 const StudentForm: React.FC<Props> = ({ student, onCancel, onSubmit }) => {
-  const { register, handleSubmit, control } = useForm<Student>({
+  const { register, handleSubmit, errors, control } = useForm<Student>({
     defaultValues: student,
   })
 
@@ -26,29 +26,46 @@ const StudentForm: React.FC<Props> = ({ student, onCancel, onSubmit }) => {
             placeholder="Type name"
             ref={register({
               required: true,
-              maxLength: 30,
+              maxLength: 50,
               pattern: /^[A-Za-zА-Яа-я ]+$/i,
             })}
           />
-          <span className="student-form__input-error--hidden">error text</span>
+          <span
+            className={
+              errors.name
+                ? 'student-form__input-error'
+                : 'student-form__input-error--hidden'
+            }
+          >
+            Required
+          </span>
         </label>
-        <label className="student-form__input-field">
-          <span>Birthdate</span>
+        <span className="student-form__input-field">
+          <label>Birthdate</label>
           <Controller
             control={control}
             name="birthdate"
             defaultValue=""
-            render={({ onChange, onBlur, value }) => (
+            rules={{ required: true }}
+            render={props => (
               <DatePicker
-                onChange={onChange}
-                onBlur={onBlur}
-                selected={value}
+                {...props}
+                selected={props.value}
                 placeholderText="Choose date"
               />
             )}
           />
-          <span className="student-form__input-error--hidden">error text</span>
-        </label>
+        </span>
+        <span
+          className={
+            errors.birthdate
+              ? 'student-form__input-error'
+              : 'student-form__input-error--hidden'
+          }
+        >
+          Required
+        </span>
+
         <label className="student-form__input-field">
           <span>Grade</span>
           <select name="grade" ref={register({ required: true })}>
@@ -58,7 +75,6 @@ const StudentForm: React.FC<Props> = ({ student, onCancel, onSubmit }) => {
               </option>
             ))}
           </select>
-          <span className="student-form__input-error--hidden">error text</span>
         </label>
         <footer className="student-form__footer">
           <button type="button" onClick={onCancel}>

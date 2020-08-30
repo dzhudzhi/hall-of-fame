@@ -76,9 +76,7 @@ export const addStudent = (student: Student) => {
 
 export const deleteStudent = (id: number) => {
   return async (dispatch: Dispatch) => {
-    const response = await axios.delete(`http://localhost:7654/students/${id}`)
-
-    const data = response.data
+    await axios.delete(`http://localhost:7654/students/${id}`)
 
     dispatch<DeleteStudentAction>({
       type: ActionTypes.deleteStudent,
