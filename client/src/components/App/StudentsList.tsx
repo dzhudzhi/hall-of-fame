@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import {
   Student,
   fetchStudents,
-  // addStudent,
-  // updateStudent,
+  addStudent,
+  updateStudent,
   deleteStudent,
 } from '../../actions'
 import { StoreState } from '../../reducers'
@@ -17,7 +17,9 @@ import './StudentsList/style.css'
 interface Props {
   students: Student[]
   fetchStudents: () => void
-  deleteStudent: typeof deleteStudent
+  addStudent: (student: Student) => void
+  updateStudent: (student: Student) => void
+  deleteStudent: (id: number) => void
   setShowModal: (key: boolean) => void
   setModalChildren: (jsx: JSX.Element | null) => void
 }
@@ -25,6 +27,8 @@ interface Props {
 const StudentsList: React.FC<Props> = ({
   students,
   fetchStudents,
+  addStudent,
+  updateStudent,
   deleteStudent,
   setShowModal,
   setModalChildren,
@@ -47,17 +51,16 @@ const StudentsList: React.FC<Props> = ({
     setShowModal(false)
   }
 
-  const handleAdd = (): void => {
-    setModalChildren(
-      <StudentForm
-        onCancel={closeModal}
-        onSubmit={values => console.log(values)}
-      />
-    )
+  const onAdd = (): void => {
+    const handleAdd = (values: Student) => {
+      addStudent(values)
+      closeModal()
+    }
+    setModalChildren(<StudentForm onCancel={closeModal} onSubmit={handleAdd} />)
     openModal()
   }
 
-  const handleDelete = (id: number): void => {
+  const onDelete = (id: number): void => {
     const handleDelete = () => {
       deleteStudent(id)
       closeModal()
@@ -66,12 +69,16 @@ const StudentsList: React.FC<Props> = ({
     openModal()
   }
 
-  const handleUpdate = (student: Student): void => {
+  const onUpdate = (student: Student): void => {
+    const handleUpdate = (values: Student) => {
+      updateStudent({ ...values, id: student.id })
+      closeModal()
+    }
     setModalChildren(
       <StudentForm
         student={student}
         onCancel={closeModal}
-        onSubmit={console.log}
+        onSubmit={handleUpdate}
       />
     )
     openModal()
@@ -82,8 +89,8 @@ const StudentsList: React.FC<Props> = ({
       <StudentCard
         key={student.id}
         student={student}
-        handleUpdate={handleUpdate}
-        handleDelete={handleDelete}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
       />
     ))
 
@@ -91,7 +98,7 @@ const StudentsList: React.FC<Props> = ({
     <div className="students-list">
       <div className="students-list__container">
         <div>
-          <button className="students-list__add-button" onClick={handleAdd}>
+          <button className="students-list__add-button" onClick={onAdd}>
             Add
           </button>
         </div>
@@ -112,6 +119,9 @@ const mapStateToProps = (state: StoreState) => {
   return { students: state.students }
 }
 
-export default connect(mapStateToProps, { fetchStudents, deleteStudent })(
-  StudentsList
-)
+export default connect(mapStateToProps, {
+  fetchStudents,
+  deleteStudent,
+  updateStudent,
+  addStudent,
+})(StudentsList)

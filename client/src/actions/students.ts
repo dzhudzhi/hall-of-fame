@@ -3,8 +3,6 @@ import { Dispatch } from 'redux'
 
 import { ActionTypes } from './types'
 
-const url = 'https://jsonplaceholder.typicode.com/users'
-
 export enum Grades {
   'неуд' = 'неуд',
   'уд' = 'уд',
@@ -41,18 +39,13 @@ export interface UpdateStudentAction {
 
 export const fetchStudents = () => {
   return async (dispatch: Dispatch) => {
-    const response = await axios.get<Student[]>(url)
+    const response = await axios.get<Student[]>(
+      'http://localhost:7654/students'
+    )
 
-    // const birthdate = new Date()
-    // const birthdateString = `${birthdate.getFullYear()}-${padS(
-    //   birthdate.getMonth() + 1
-    // )}-${birthdate.getDay()}`
-
-    const data = response.data.map(({ id, name }) => ({
-      id,
-      name,
-      birthdate: new Date(),
-      grade: Grades['хор'],
+    const data = response.data.map(student => ({
+      ...student,
+      birthdate: new Date(student.birthdate),
     }))
 
     dispatch<FetchStudentsAction>({
@@ -62,21 +55,58 @@ export const fetchStudents = () => {
   }
 }
 
-export const addStudent = (student: Student): AddStudentAction => {
-  return {
-    type: ActionTypes.addStudent,
-    payload: student,
+export const addStudent = (student: Student) => {
+  return async (dispatch: Dispatch) => {
+    const headers = { ContentType: 'application/json' }
+    const response = await axios.post<Student>(
+      'http://localhost:7654/students',
+      student,
+      { headers }
+    )
+
+    const data = response.data
+    data.birthdate = new Date(student.birthdate)
+
+    dispatch<AddStudentAction>({
+      type: ActionTypes.addStudent,
+      payload: data,
+    })
   }
 }
 
-export const deleteStudent = (id: number): DeleteStudentAction => {
-  return {
-    type: ActionTypes.deleteStudent,
-    payload: id,
+export const deleteStudent = (id: number) => {
+  return async (dispatch: Dispatch) => {
+    const response = await axios.delete(`http://localhost:7654/students/${id}`)
+
+    const data = response.data
+
+    dispatch<DeleteStudentAction>({
+      type: ActionTypes.deleteStudent,
+      payload: id,
+    })
   }
 }
 
-export const updateStudent = (student: Student): UpdateStudentAction => {
+export const updateStudent = (student: Student) => {
+  return async (dispatch: Dispatch) => {
+    const headers = { ContentType: 'application/json' }
+    const response = await axios.put<Student>(
+      `http://localhost:7654/students/${student.id}`,
+      student,
+      { headers }
+    )
+
+    const data = response.data
+    data.birthdate = new Date(student.birthdate)
+
+    dispatch<UpdateStudentAction>({
+      type: ActionTypes.updateStudent,
+      payload: data,
+    })
+  }
+}
+
+export const updateStudents = (student: Student): UpdateStudentAction => {
   return {
     type: ActionTypes.updateStudent,
     payload: student,
