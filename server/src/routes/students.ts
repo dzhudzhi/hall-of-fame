@@ -1,20 +1,15 @@
 import { Context } from 'koa'
 import Router from 'koa-router'
+import studentController from '../controllers/student'
 
 const router = new Router()
 
-router.get('/students', async (ctx: Context) => {
-  try {
-    ctx.body = {
-      students: [
-        { id: 1, name: 'Sanal', birthdate: new Date(), grade: 'отл' },
-        { id: 2, name: 'Mergen', birthdate: new Date(), grade: 'хор' },
-        { id: 3, name: 'Tolik', birthdate: new Date(), grade: 'хор' },
-      ],
-    }
-  } catch (e) {
-    console.error(e)
-  }
-})
+router.get('/students', studentController.getStudents)
+
+router.post('/students', studentController.createStudent)
+
+router.put('/students/:id', studentController.updateStudent)
+
+router.delete('/students/:id', studentController.deleteStudent)
 
 export default router

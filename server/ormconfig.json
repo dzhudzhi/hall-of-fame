@@ -1,0 +1,18 @@
+{
+  "type": "postgres",
+  "host": "balarama.db.elephantsql.com",
+  "port": 5432,
+  "username": "qwthlwqn",
+  "password": "JVdOHlTo6k6rwyqW4GSaj0oiqTeavwFa",
+  "database": "qwthlwqn",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/entity/**/*.ts"],
+  "migrations": ["src/migration/**/*.ts"],
+  "subscribers": ["src/subscriber/**/*.ts"],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}
