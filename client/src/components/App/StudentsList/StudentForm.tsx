@@ -51,6 +51,10 @@ const StudentForm: React.FC<Props> = ({ student, onCancel, onSubmit }) => {
               <DatePicker
                 {...props}
                 selected={props.value}
+                dateFormat="dd/MM/yyyy"
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
                 placeholderText="Choose date"
               />
             )}
