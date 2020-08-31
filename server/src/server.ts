@@ -4,10 +4,14 @@ import bodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
 import logger from 'koa-logger'
 import { createConnection } from 'typeorm'
+import * as swagger from 'swagger2'
+import { ui } from 'swagger2-koa'
 
 import { config } from './config'
 import studentsRoutes from './routes/students'
 import { qaRouter } from './routes/qa-routes'
+
+const swaggerDocument: any = swagger.loadDocumentSync('./src/api.yaml')
 
 const app = new Koa()
 
@@ -25,6 +29,8 @@ const startServer = async () => {
   )
 
   app.use(logger())
+
+  app.use(ui(swaggerDocument, '/swagger'))
 
   app.use(studentsRoutes.routes()).use(studentsRoutes.allowedMethods())
 

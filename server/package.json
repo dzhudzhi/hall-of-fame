@@ -19,6 +19,8 @@
     "koa2-cors": "^2.0.6",
     "pg": "^8.3.3",
     "reflect-metadata": "^0.1.13",
+    "swagger2": "^2.0.0",
+    "swagger2-koa": "^2.0.0",
     "typeorm": "^0.2.25",
     "typescript": "^4.0.2"
   },
