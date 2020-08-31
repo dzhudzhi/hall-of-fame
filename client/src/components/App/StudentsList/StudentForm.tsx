@@ -41,7 +41,7 @@ const StudentForm: React.FC<Props> = ({ student, onCancel, onSubmit }) => {
           </span>
         </label>
         <span className="student-form__input-field">
-          <label>Birthdate</label>
+          <label htmlFor="birthdate">Birthdate</label>
           <Controller
             control={control}
             name="birthdate"
@@ -50,6 +50,7 @@ const StudentForm: React.FC<Props> = ({ student, onCancel, onSubmit }) => {
             render={props => (
               <DatePicker
                 {...props}
+                id="birthdate"
                 selected={props.value}
                 dateFormat="dd/MM/yyyy"
                 showMonthDropdown
@@ -59,15 +60,15 @@ const StudentForm: React.FC<Props> = ({ student, onCancel, onSubmit }) => {
               />
             )}
           />
-        </span>
-        <span
-          className={
-            errors.birthdate
-              ? 'student-form__input-error'
-              : 'student-form__input-error--hidden'
-          }
-        >
-          Required
+          <span
+            className={
+              errors.birthdate
+                ? 'student-form__input-error'
+                : 'student-form__input-error--hidden'
+            }
+          >
+            Required
+          </span>
         </span>
 
         <label className="student-form__input-field">
